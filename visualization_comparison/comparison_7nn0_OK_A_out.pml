@@ -40,7 +40,7 @@
             
             
             # SAS points
-            load "../p2rank_predictions/visualizations/data/7nn0_OK_A_out.pdb_points.pdb.gz", points
+            load "../p2rank_output/visualizations/data/7nn0_OK_A_out.pdb_points.pdb.gz", points
         set_color pcol1 = [0.361,0.576,0.902]
 select surf_pocket1, protein and id [4406,4410,4411,4417,4868,4421,4869,4378,4379,4384,4357,4358,4359,6833,6836,6840,6832,6810,6812,4377,8356,8357,8358,3997,4920,4942,4944,6811,6813,4422,4424,4425,4426,5762,8333,8335,4343,4392,6216,6217,8780,4356,4388,4391] 
 set surface_color,  pcol1, surf_pocket1 
