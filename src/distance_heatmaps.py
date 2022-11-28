@@ -5,11 +5,15 @@ import numpy as np
 from sklearn import metrics
 import seaborn as sns
 import matplotlib.pyplot as plt
+import scipy.spatial as sp
+import scipy.cluster.hierarchy as hc
 
-def prepare_fpocket(path):
+def prepare_fpocket(path, cut=15):
     
     # Load file (FWF because sometimes no whitespaces between columns)
     fpocket_df = pd.read_fwf(path, 
+                             colspecs=[(0,4), (6, 11), (12, 16), (17, 20), (23, 26), 
+                                       (31, 38), (40, 46), (48, 54), (58, 62), (67, 70)],
                             names=['ATOM', 'Atom_number', 'Polarity', 'STP',
                                     'rank', 'center_x', 'center_y', 
                                     'center_z', '0.00', 'radius'],
@@ -21,10 +25,12 @@ def prepare_fpocket(path):
     # Calculate center of mass for each pocket
     fpocket_central = fpocket_df.groupby('rank')[['center_x', 'center_y', 'center_z']].mean()
     
+    
     # Generate column with the number of pocket (Fpocket rank)
     fpocket_central.reset_index(inplace=True)
-    # fpocket_central.rename(columns={'Pocket_num': 'Fpocket rank'}, 
-    #                     inplace=True)
+    
+    # Just take the pockets with rank >= cut
+    fpocket_central = fpocket_central[fpocket_central['rank'] <= cut]
 
     
     return fpocket_central
@@ -47,7 +53,8 @@ def generate_dist_matrix(df1, df2):
     # Calculate pairwise distances
     distances = metrics.pairwise_distances(
                         df1.loc[:,['center_x', 'center_y', 'center_z']],
-                        df2.loc[:,['center_x', 'center_y', 'center_z']]
+                        df2.loc[:,['center_x', 'center_y', 'center_z']],
+                        metric='euclidean'
                         )
     
     # Create a dataframe with calculated distances
@@ -74,13 +81,26 @@ def generate_heatmap(dist_df, output_path, x_label, y_label, size):
     # Save plot
     fig.savefig(output_path, dpi=200)
     
+    # Close figure (Otherwise RuntimeWarning appears)
+    plt.close()
+    
 def generate_clustermap(dist_df, output_path, x_label, y_label, size):
+    
+    # Distance matrix to linkage
+    # print(np.allclose(dist_df, dist_df.T))
+    # condensed_dist = dist_df.to_numpy()[np.triu_indices(dist_df.shape[0],1)]
+    # linkage = hc.linkage(condensed_dist, 
+    #                     method='average')
     
     # Plot clustermap
     clustermap = sns.clustermap(dist_df.to_numpy(),
+                                # row_linkage = linkage,
+                                # col_linkage = linkage,
                                 figsize=size, 
                                 cmap='viridis_r',
-                                annot=True)
+                                annot=True,
+                                xticklabels = dist_df.columns,
+                                yticklabels = dist_df.index)
     clustermap.ax_heatmap.set_xlabel(x_label)
     clustermap.ax_heatmap.set_ylabel(y_label)
     
@@ -110,11 +130,11 @@ def fpocket_vs_p2rank(dirname, name, cluster = False):
     if cluster == True:
         generate_clustermap(distance_df,
                      os.path.join(dirname, f'{name}_distances.png'),
-                     'P2Rank rank', 'Fpocket rank', (8,10))
+                     'P2Rank rank', 'Fpocket rank', (16,16))
     else:
         generate_heatmap(distance_df,
                         os.path.join(dirname, f'{name}_distances.png'),
-                        'P2Rank rank', 'Fpocket rank', (6,10))
+                        'P2Rank rank', 'Fpocket rank', (16,16))
     
 def fpocket_within_distance(dirname, name, cluster = False):
     
@@ -157,4 +177,5 @@ if __name__=="__main__":
         fpocket_vs_p2rank('../distance_comparison/', 
                             name, 
                             cluster = False)
+        
     
