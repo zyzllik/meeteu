@@ -91,11 +91,11 @@ def generate_clustermap(dist_df, output_path, x_label, y_label, size):
     # Close figure (Otherwise RuntimeWarning appears)
     plt.close()
     
-def prepare_and_plot(dirname, name, cluster = False):
+def fpocket_vs_p2rank(dirname, name, cluster = False):
     
     # Load and prepare data
     fpocket_path = f'../fpocket_output/{name}_pockets.pqr.txt'
-    p2rank_path = f'../p2rank_predictions/{name}.pdb_predictions.csv'
+    p2rank_path = f'../p2rank_output/{name}.pdb_predictions.csv'
     fpocket_df = prepare_fpocket(fpocket_path)
     p2rank_df = prepare_p2rank(p2rank_path)
     
@@ -148,4 +148,13 @@ if __name__=="__main__":
         fpocket_within_distance('../fpocket_distance_cluster/', 
                                 name, 
                                 cluster = True)
+        fpocket_within_distance('../fpocket_distance_comparison/', 
+                                name, 
+                                cluster = False)
+        fpocket_vs_p2rank('../distance_cluster/', 
+                            name, 
+                            cluster = True)
+        fpocket_vs_p2rank('../distance_comparison/', 
+                            name, 
+                            cluster = False)
     
