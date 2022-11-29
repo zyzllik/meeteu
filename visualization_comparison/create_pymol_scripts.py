@@ -6,6 +6,7 @@ files = os.listdir("../fpocket_output")
 for f in files:
     if f.endswith(".pdb"):
         name = f[:-4]
+        print('Creating visualization file for: ', f)
         with open(f"comparison_{name}.pml", 'w') as output_f:
             output_f.write("""                  
                 from pymol import cmd,stored
@@ -52,9 +53,9 @@ for f in files:
             
             # SAS points
             """)
-            output_f.write(f"load \"../p2rank_predictions/visualizations/data/{name}.pdb_points.pdb.gz\", points")
+            output_f.write(f"load \"../p2rank_output/visualizations/data/{name}.pdb_points.pdb.gz\", points")
             output_f.write('\n')
-            with open(f'../p2rank_predictions/visualizations/{name[:-4]}.pdb.pml', 'r') as p2rank_file:
+            with open(f'../p2rank_output/visualizations/{name[:-4]}.pdb.pml', 'r') as p2rank_file:
                 lines_to_write = []
                 start = False
                 for line in p2rank_file:
