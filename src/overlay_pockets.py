@@ -7,6 +7,7 @@ import re
 import matplotlib.pyplot as plt
 import seaborn as sns
 from functools import reduce
+import networkx as nx
       
 
 def load_fpocket(path, name='A'):
@@ -19,7 +20,8 @@ def load_fpocket(path, name='A'):
     pockets = {}
     # Get the list of all pockets (the total number used below)
     stored.spheres = []
-    cmd.iterate(f'fpocket_{name}', 'stored.spheres.append(resv)')  
+    cmd.iterate(f'fpocket_{name}', 'stored.spheres.append(resv)')
+    print('Number of fpocket pockets: ', stored.spheres[-1])  
     for i in range(1, stored.spheres[-1]+1): # For each pocket
         # Select alpha-spheres
         cmd.select(f'fpocket_sphere_{name}_{i}', 
@@ -36,6 +38,7 @@ def load_fpocket(path, name='A'):
         cmd.iterate(f'fpocket_{name}_{i}', 'stored.residue_number.append(resv)')
         pockets[i] = np.unique(stored.residue_number)
     
+    cmd.delete('all')
     # Dictionary to datafram
     df = pd.DataFrame.from_dict(pockets, orient='index')
     df.reset_index(inplace=True)
@@ -83,7 +86,7 @@ def calculate_overlap(df_list):
             residues.append(prepare_residue_array(df_list[df_i], combi[df_i]))
 
         intersection = reduce(np.intersect1d, residues)
-        union = reduce(np.union1d, residues)
+        #union = reduce(np.union1d, residues)
         #overlap = len(intersection) / len(union)
         overlap = len(intersection) / np.min([r.size for r in residues])
         
@@ -131,21 +134,55 @@ def generate_heatmap(dist_df, output_path, title, x_label, y_label, size):
     
     # Close figure (Otherwise RuntimeWarning appears)
     plt.close()
+    
+   
+def generate_graph(df_list, name_list = ['fA', 'fE', 'pA', 'pE']):
+    index_list = [df['rank'] for df in df_list]
+    combinations = itertools.product(*index_list)
+    
+    G = nx.Graph()
+    colors = ['tab:green', 'tab:yellow', 'tab:red', 'tab:blue']
+    for i in range(len(index_list)):
+        G.add_nodes_from([name_list[i]+'_'+str(el) for el in index_list[i]],
+                         node_color = colors[i])
+    
+    i = 1
+    
+    for combi in combinations:
+        if 20 in combi:
+            continue
+        
+        residues = []
+        for df_i in range(len(df_list)):
+            residues.append(prepare_residue_array(df_list[df_i], combi[df_i]))
+
+        intersection = reduce(np.intersect1d, residues)
+        #union = reduce(np.union1d, residues)
+        #overlap = len(intersection) / len(union)
+        overlap = len(intersection) / np.min([r.size for r in residues])
+        
+        if intersection.size > 0:
+            #str_intersection = ','.join(str(i) for i in intersection)
+            for nodes in itertools.combinations(combi, 2):
+                nodes_list = [name_list[i]+'_'+str(el) for el in nodes]
+                G.add_edge(*nodes_list)
+
+    return G
 
 if __name__=='__main__':
-    structures = ['5rm2', '5rme', '6zsl', '7nio', '7nn0']
-    #structures = ['7nn0']
+    #structures = ['5rm2', '5rme', '6zsl', '7nio', '7nn0']
+    structures = ['7nn0']
     all_p2rank_files = os.listdir('../p2rank_output/')
     all_fpocket_files = os.listdir('../fpocket_output/')
     for structure in structures:
         print(structure)
-        regex_p2rank = re.compile(f'.*{structure}_OK_.*.pdb_predictions.csv')
+        regex_p2rank = re.compile(f'.*{structure}_OK_(A|D).*.pdb_predictions.csv')
         p2rank_files = []
         for p2rank in all_p2rank_files:
             if regex_p2rank.search(p2rank):
                 p2rank_files.append(p2rank)
         print(p2rank_files)
-        regex_fpocket = re.compile(f'.*{structure}_OK_.*_out.pdb')
+        regex_fpocket = re.compile(f'.*{structure}_OK_(A|D).*_out.pdb')
         fpocket_files = []
         for fpocket in all_fpocket_files:
             if regex_fpocket.search(fpocket):
@@ -183,6 +220,9 @@ if __name__=='__main__':
                     os.path.join('../fpocket_output/', fpocket_file)
                     )
                 )
+  
+            
+            
         p2rank_dfs = []
         for p2rank_file in p2rank_files:
             p2rank_dfs.append(
@@ -190,6 +230,14 @@ if __name__=='__main__':
                     os.path.join('../p2rank_output/', p2rank_file)
                     )
                 )
+            
+        G = generate_graph(fpocket_dfs+p2rank_dfs)
+        fig, ax = plt.subplots()
+        fig.set_size_inches(20, 20)
+        nx.draw_shell(G, with_labels=True, ax=ax)
+        #nx.draw(G, pos=nx.spring_layout(G), with_labels=True, ax=ax)
+        plt.savefig(f'../pocket_overlap_results/{structure}_pocket_graph.png')
+           
         results, intersection_residues = calculate_overlap(fpocket_dfs+p2rank_dfs)
         hits = np.argwhere(results > 0.0).transpose()
         # hit_values = []
@@ -239,7 +287,7 @@ if __name__=='__main__':
         
         hist_df = hist_df.sort_values(by=['IoMIN'], ascending=False)
     
-        hist_df.to_csv(f'../pocket_overlap_results/{structure}_all_IoMIN.csv')
+        hist_df.to_csv(f'../pocket_overlap_results/{structure}_AD_IoMIN.csv')
         
         
                     
