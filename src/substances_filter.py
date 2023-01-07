@@ -152,7 +152,7 @@ class Filter:
         self.log_file.write_text(
             f"\nFiltered by scores: {self.scores}\n"\
             f"Value threshold: {self.score_value_thr}\n"\
-            f"If at least {self.score_thr} are negative, the molecule is eliminated.\n"\
+            f"If less than {self.score_thr} are positive, the molecule is eliminated.\n"\
             f"\tNumber of eliminated molecules: {np.sum(self.df['scores_sum'] <= self.score_thr)}\n"\
             f"If just less rules are negative, a warning is added.\n"\
             f"\tTotal number of new warnings: {np.sum((self.df['scores_sum'] > self.score_thr) & (self.df['scores_sum'] < len(self.scores)))}\n"
