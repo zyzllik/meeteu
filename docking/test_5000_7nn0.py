@@ -36,7 +36,7 @@ for candidate_num in range(len(mydata)):
     v.compute_vina_maps(center=[centroid.x, centroid.y,
                                 centroid.z], box_size=[25, 25, 25])
     #print(v.score()[0])
-    v.dock(exhaustiveness=24, n_poses=20)
+    v.dock(exhaustiveness=24, n_poses=10)
     print(v.score()[0])
     #output_pdbqt = v.poses(n_poses=20)
     #v.write_poses(mydata["eos"][candidate_num] + '_docking_results.pdbqt', n_poses=1, overwrite=True)
