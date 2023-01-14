@@ -6,7 +6,7 @@ from vina import Vina
 import pandas as pd
 
 scores_pocket1_7nn0 = []
-mydata = pd.read_csv("ecbd_all.csv")
+mydata = pd.read_csv("filtered_mols.csv")
 for candidate_num in range(len(mydata)):
     print(mydata["eos"][candidate_num] + " is being processed")
     lig = rdkit.Chem.MolFromSmiles(mydata["smiles"][candidate_num])
