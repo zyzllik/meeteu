@@ -218,6 +218,14 @@ if __name__ == '__main__':
         df = concatenate_all_files(input_folder, '_admetlab.csv')
         df.to_csv('/mnt/c/Users/liza_/Documents/2. Studium/0 Master/Meet-EU/meeteu/Substances/ecbd_all_admetlab.csv')
     
+    if 'eos' not in df.columns:
+        df_original = pd.read_csv(os.path.join(input_folder, 'ecbd_all.csv'))
+        print (df_original.shape)
+        df_original = df_original.loc[df_original['smiles'] != 'O=[V]([O-])([O-])[O-].[Na+].[Na+].[Na+]']
+        df_original = df_original.loc[df_original['smiles'] != 'NS(N)(=O)=O']
+        print (df_original.shape)
+        df['eos'] = df_original['eos']
+        
     # Output folder name with the current date and tim
     now = datetime.datetime.now().strftime("%y-%m-%d_%-H-%M")
     output_folder = os.path.join(input_folder, f'admetlab_filter_{now}/')

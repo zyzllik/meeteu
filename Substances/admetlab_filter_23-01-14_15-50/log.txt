@@ -1,0 +1,21 @@
+Filtering started...
+Total number of input molecules: 102074
+-----------------------
+
+Filtered by rules: ['Pfizer', 'GSK', 'Lipinski', 'GoldenTriangle']
+If at least 2 are negative, the molecule is eliminated.
+	Number of eliminated molecules: 2813
+If just 1 rule is negative, a warning is added.
+	Total number of new warnings: 23261
+
+Filtered by scores: ['hERG', 'H-HT', 'DILI', 'Ames', 'ROA', 'NR-AR', 'NR-AR-LBD', 'NR-AhR', 'NR-Aromatase', 'NR-ER-LBD', 'NR-PPAR-gamma', 'SR-ARE', 'SR-ATAD5', 'SR-HSE', 'SR-MMP', 'SR-p53']
+Value threshold: 0.7
+If less than 10 are positive, the molecule is eliminated.
+	Number of eliminated molecules: 8764
+If just less rules are negative, a warning is added.
+	Total number of new warnings: 80129
+
+Number of PAINS warnings: 64
+
+--------
+Filtering finished.
