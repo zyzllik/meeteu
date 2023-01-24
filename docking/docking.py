@@ -91,10 +91,12 @@ def docking_pipeline(molecules, protein, pocket, mode='screening', start=0):
         protein: pdbqt file of the protein
         pocket: sdf file of the pocket
         mode: running mode (screening or refinement)
-        start: which row of the molecules file to start with
-    '''
-    
+        start: which row of the molecules file to start with (row in the document)
+    '''    
     mydata = pd.read_csv(molecules)
+    
+    #  From row to index
+    start = start - 2
 
     # Output folder name with the current date and time
     now = datetime.datetime.now().strftime("%y-%m-%d_%-H-%M")
@@ -111,7 +113,7 @@ def docking_pipeline(molecules, protein, pocket, mode='screening', start=0):
         if candidate_num < start:
             continue
         
-        eos = mydata["eos"][candidate_num]
+        eos = mydata["smiles"][candidate_num] # actually eos instead of smiles
         print(eos + f" is being processed: {candidate_num+1} from {len(mydata)}")
 
         try:
@@ -123,8 +125,8 @@ def docking_pipeline(molecules, protein, pocket, mode='screening', start=0):
                 file.write(f'{eos},ERROR\n')
             
 if __name__=='__main__':
-    molecules = "filtered_mols_1.csv"
+    molecules = "filtered_mols_2.csv"
     protein = "7nio_OK_A.pdbqt"
     pocket = 'pocket1_7nio.sdf'
     docking_pipeline(molecules, protein, pocket,
-                     mode = 'screening', start = 2169)
+                     mode = 'screening', start = 5077)
