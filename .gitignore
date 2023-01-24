@@ -1,2 +1,6 @@
 # Small unimportant scripts
 scripts/**
+# Notebooks to test stuff
+notebooks/**
+# Snakemake
+.snakemake/**
