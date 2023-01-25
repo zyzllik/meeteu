@@ -17,15 +17,18 @@ POCKETS = ['1', '2', '3', '4', '5']
 
 DOCKING_MAIN_FOLDER = "docking/"
 SAMPLE_FOLDERS = []
+SAMPLES = []
 for struct in STRUCTURES:
     for pocket in POCKETS:
         path = os.path.join(DOCKING_MAIN_FOLDER, f"{struct}_pocket{pocket}")
         if os.path.exists(path):
             SAMPLE_FOLDERS.append(path)
+            SAMPLES.append(f"{struct}_pocket{pocket}")
 
 DOCKING_RESULTS = []
 for sample_folder in SAMPLE_FOLDERS:
-        for folder in os.listdir(sample_folder):
+    for folder in os.listdir(sample_folder):
+        if os.path.isdir(os.path.join(sample_folder, folder)) and folder.startswith("docking"):
             for dockfile in os.listdir(os.path.join(sample_folder, folder)):
                 if "SMILES" not in dockfile:
                     DOCKING_RESULTS.append(os.path.join(folder, '.'.join(dockfile.split('.')[:-1])))
@@ -36,15 +39,28 @@ rule all:
         # Input files (docking results, wrong EOS)
         expand("{sample_f}/{result_f}.csv", sample_f=SAMPLE_FOLDERS, result_f=DOCKING_RESULTS),
         # Docking results, SMILES to wrong EOS, after wrong_EOS_add_SMILES
-        expand("{sample_f}/{result_f}_SMILES.csv", sample_f=SAMPLE_FOLDERS, result_f=DOCKING_RESULTS)
+        expand("{sample_f}/{result_f}_SMILES.csv", sample_f=SAMPLE_FOLDERS, result_f=DOCKING_RESULTS),
+        # Merged docking file
+        expand("{sample_f}/{sample}_docking_results_merged.csv", sample_f=SAMPLE_FOLDERS, sample=SAMPLES)
 
 rule wrong_EOS_add_SMILES:
     input:
         script = "src/change_wrongEOS_to_SMILES.py",
         input_f = "{sample_f}/{result_f}.csv"
     output:
-        output_file = "{sample_f}/{result_f}_SMILES.csv"
+        output_f = "{sample_f}/{result_f}_SMILES.csv"
     shell:
         '''
         python {input.script} {input.input_f}
+        '''
+
+rule merge_docking_results:
+    input:
+        script = "src/merge_docking_results.py",
+        input_f = expand("{sample_f}/{result_f}_SMILES.csv", sample_f=SAMPLE_FOLDERS, result_f=DOCKING_RESULTS)
+    output:
+        output_f = "{sample_f}/{sample}_docking_results_merged.csv"
+    shell:
+        '''
+        python {input.script} {wildcards.sample}
         '''
