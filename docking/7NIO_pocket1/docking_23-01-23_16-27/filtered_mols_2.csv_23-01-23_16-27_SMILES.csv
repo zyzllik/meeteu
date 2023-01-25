@@ -1,4 +1,4 @@
-,Molecule,Score,admet_smiles
+,Molecule,Score,admetlab_smiles
 0,Cc1cc(C)n(C[C@@H](C)CNC(=O)c2ccc(C)s2)n1,-6.975,Cc1cc(C)n(C[C@@H](C)CNC(=O)c2ccc(C)s2)n1
 1,CCCCOCCCN=C1CCCCCN1,-9.346,CCCCOCCCN=C1CCCCCN1
 2,Cc1nnc(C(C)N2CCn3c(n[nH]c3=O)C2)s1,-7.298,Cc1nnc(C(C)N2CCn3c(n[nH]c3=O)C2)s1

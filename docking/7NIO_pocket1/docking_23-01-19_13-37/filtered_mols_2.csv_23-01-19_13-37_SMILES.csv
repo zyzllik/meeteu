@@ -1,4 +1,4 @@
-,Molecule,Score,admet_smiles
+,Molecule,Score,admetlab_smiles
 0,EOS58040,-12.176,Cc1cc(C(=O)N2CCCn3nc(C(C)O)cc3C2)nc(C)n1
 1,EOS58042,-8.587,Cc1cc(C)cc(CN2CCN(C(=O)c3c[nH]nn3)CC2=O)c1
 2,EOS58404,-6.916,COc1cccc(SCC(=O)N(C)Cc2cnc3ccccn23)c1

@@ -1,4 +1,4 @@
-,Molecule,Score,admet_smiles
+,Molecule,Score,admetlab_smiles
 0,EOS28,-7.609,O=C(c1snnc1-c1ccccc1)N1CCOCC1
 1,EOS34,-7.725,CC1(C)OC(=O)CC1C(=O)N1CCCCC1c1ccccn1
 2,EOS36,-8.362,CC1(C)OC(=O)CC1C(=O)NCCn1ccnc1-c1ccccc1

@@ -19,7 +19,7 @@ def add_smiles(input_df, smiles_df):
     # smiles_df: df used for reference
     
     df = input_df.copy()
-    df['admet_smiles'] = ''
+    df['admetlab_smiles'] = ''
     
     # Iterate through molecules
     for i in range(df.shape[0]):
@@ -32,9 +32,9 @@ def add_smiles(input_df, smiles_df):
             print('Error, should be SMILES or EOS: ', mol)
               
         try:
-            df['admet_smiles'].iloc[i] = smiles.iloc[0]
+            df['admetlab_smiles'].iloc[i] = smiles.iloc[0]
         except:
-            df['admet_smiles'].iloc[i] = smiles
+            df['admetlab_smiles'].iloc[i] = smiles
     
     return df
 
