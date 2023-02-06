@@ -41,7 +41,9 @@ rule all:
         # Docking results, SMILES to wrong EOS, after wrong_EOS_add_SMILES
         expand("{sample_f}/{result_f}_SMILES.csv", sample_f=SAMPLE_FOLDERS, result_f=DOCKING_RESULTS),
         # Merged docking file
-        expand("{sample_f}/{sample}_docking_results_merged.csv", sample_f=SAMPLE_FOLDERS, sample=SAMPLES)
+        expand("{sample_f}/{sample}_docking_results_merged.csv", sample_f=SAMPLE_FOLDERS, sample=SAMPLES),
+        # Filterd docking results from the merged file
+        expand("{sample_f}/{sample}_docking_results_merged_filtered_-11.csv", sample_f=SAMPLE_FOLDERS, sample=SAMPLES)
 
 rule wrong_EOS_add_SMILES:
     input:
@@ -63,4 +65,14 @@ rule merge_docking_results:
     shell:
         '''
         python {input.script} {wildcards.sample}
+        '''
+rule filter_docking_results:
+    input:
+        script = "src/docking_postprocess.py",
+        input_f = "{sample_f}/{sample}_docking_results_merged.csv"
+    output:
+        output_f = "{sample_f}/{sample}_docking_results_merged_filtered_-11.csv"
+    shell:
+        '''
+        python {input.script} {input.input_f}
         '''
