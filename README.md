@@ -12,7 +12,7 @@ This repository contains code and results for the virtual screening campaign of 
 ## Contents of the folders:
 
 * **Nsp13Structures**: provided NSP13 structures, saved as separated chains
-* **pocket_detection**: output of Fpocket and P2Rank softwares for binding sites detection and results comparison
+* **pocket_detection**: output of Fpocket and P2Rank softwares for binding sites detection and results comparison, final pockets (**Final detexted binding pockets.pdf**), scripts for visualization in PyMOL
 * **substances**: csv files of the full and filteres ECBD 
 * **docking**: docking results obtained with AutoDock Vina 
 * **md-simulations**: molecular dynamics results. Due to their large size trajectories and other files are only available on request.
@@ -23,7 +23,7 @@ This repository contains code and results for the virtual screening campaign of 
 Structures used for the study: [7NIO](https://www.rcsb.org/structure/7NIO) and [7NN0](https://www.rcsb.org/structure/7NN0)
 ### Binding sites identification
 First, [P2Rank](https://github.com/rdk/p2rank) and [Fpocket](https://github.com/Discngine/fpocket) were used to predict the binding sites for both NSP13 structures. 
-**overlay_pockets.py** script then can be run to calculate the overlay in the results from different softwares.
+**overlay_pockets.py** script then can be run to calculate the overlay in the results from different softwares. **cluster_pockets.py** produces plots that assist manual merging of the overlayed results.
 ### Filtering database
 [ECBD](https://ecbd.eu/) was used as a starting point and then was checked for toxicity and pharmacolokinetic properties with [ADMETlab web tool](https://admetmesh.scbdd.com/). 
 **substances_filter.py** script filters then the ADMETlab output based on acceptance of at least 3 out of 4 rules (Lipinski Rule, Pfizer Rule, GSK Rule and Golden Triangle Rule).
