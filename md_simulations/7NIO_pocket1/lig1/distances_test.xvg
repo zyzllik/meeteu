@@ -1,0 +1,26 @@
+# This file was created Fri Feb  3 16:50:01 2023
+# Created by:
+#                     :-) GROMACS - gmx distance, 2022.4 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /home/elizaveta/meeteu/md_simulations
+# Command line:
+#   gmx distance -f 7NIO_pocket1/lig1/md_10ns_lig1_center.xtc -s 7NIO_pocket1/lig1/npt_lig1.gro -oallstat 7NIO_pocket1/lig1/distances_test.xvg -select 'com of group Protein plus com of group LIG1'
+# gmx distance is part of G R O M A C S:
+#
+# GROup of MAchos and Cynical Suckers
+#
+@    title "Statistics for individual distances"
+@    xaxis  label "Distance index"
+@    yaxis  label "Average/standard deviation (nm)"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "com of group Protein plus com of group LIG1 avg"
+@ s1 legend "com of group Protein plus com of group LIG1 std.dev."
+      0.000    1.598    0.206
