@@ -34,7 +34,7 @@ def get_overlaps(df):
         
 #structures = ['5rm2', '5rme', '6zsl', '7nio']#, '7nn0']
 structures = ['7nio']
-folder = '/mnt/c/Users/liza_/Documents/2. Studium/0 Master/Meet-EU/meeteu/pocket_overlap_results/'
+folder = '../pocket_detection/pocket_overlap_results/'
 for structure in structures: 
     print(structure)
     df = load_file(os.path.join(folder, f'{structure}_all_IoMIN.csv'))
