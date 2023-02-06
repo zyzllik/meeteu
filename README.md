@@ -29,7 +29,7 @@ First, [P2Rank](https://github.com/rdk/p2rank) and [Fpocket](https://github.com/
 **substances_filter.py** script filters then the ADMETlab output based on acceptance of at least 3 out of 4 rules (Lipinski Rule, Pfizer Rule, GSK Rule and Golden Triangle Rule).
 ### Molecular Docking
 **docking.py** script takes the list of ligand in form of SMILES and the pdb file for protein and runs the docking with AutoDock Vina software, script has also the refinement option corresponding to the docking run with the higher exhaustiveness. Docking directly from SMILES strings is possible thanks to the [Meeko](https://www.blopig.com/blog/2022/08/meeko-docking-straight-from-smiles-string/) Python package.
-**docking_postprocess.py** takes the docking output, filters and sorts the results 
+**docking_postprocess.py** takes the docking output, filters and sorts the results. For easier post-processing the pipeline defined by the Snakemake file can be used.
 ### Molecular Dynamics simulations
 **MD_simulation_workflow.ipynb** jupyter notebook describes step by step the whole protein and ligand preparation process, necessary .mdp files can be found in the MD folder
 This process was based on the [GROMACS tutorial](http://www.mdtutorials.com/gmx/complex/index.html) by Justin A. Lemkul, Ph.D.
