@@ -25,10 +25,10 @@ Structures used for the study: [7NIO](https://www.rcsb.org/structure/7NIO) and [
 First, [P2Rank](https://github.com/rdk/p2rank) and [Fpocket](https://github.com/Discngine/fpocket) were used to predict the binding sites for both NSP13 structures. 
 **overlay_pockets.py** script then can be run to calculate the overlay in the results from different softwares. **cluster_pockets.py** produces plots that assist manual merging of the overlayed results.
 ### Filtering database
-[ECBD](https://ecbd.eu/) was used as a starting point and then was checked for toxicity and pharmacolokinetic properties with [ADMETlab web tool](https://admetmesh.scbdd.com/). 
+[ECBD](https://ecbd.eu/) was used as a starting point and then was checked for toxicity and pharmacokinetic properties with [ADMETlab web tool](https://admetmesh.scbdd.com/). 
 **substances_filter.py** script filters then the ADMETlab output based on acceptance of at least 3 out of 4 rules (Lipinski Rule, Pfizer Rule, GSK Rule and Golden Triangle Rule).
 ### Molecular Docking
-**docking.py** script takes the list of ligand in form of SMILES and the pdb file for protein and runs the docking with AutoDock Vina software, script has also the refinement option corresponding to the docking run with the higher exhaustiveness. Docking directly from SMILES strings is possible thanks to the [Meeko](https://www.blopig.com/blog/2022/08/meeko-docking-straight-from-smiles-string/) Python package.
+**docking.py** script takes the list of ligand in form of SMILES and the .pdbqt file for protein and runs the docking with AutoDock Vina software, script has also the refinement option corresponding to the docking run with the higher exhaustiveness. Docking directly from SMILES strings is possible thanks to the [Meeko](https://www.blopig.com/blog/2022/08/meeko-docking-straight-from-smiles-string/) Python package.
 **docking_postprocess.py** takes the docking output, filters and sorts the results. For easier post-processing the pipeline defined by the Snakemake file can be used.
 ### Molecular Dynamics simulations
 **MD_simulation_workflow.ipynb** jupyter notebook describes step by step the whole protein and ligand preparation process, necessary .mdp files can be found in the MD folder
