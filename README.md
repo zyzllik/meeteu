@@ -35,7 +35,7 @@ First, [P2Rank](https://github.com/rdk/p2rank) and [Fpocket](https://github.com/
 This process was based on the [GROMACS tutorial](http://www.mdtutorials.com/gmx/complex/index.html) by Justin A. Lemkul, Ph.D.
 ### Variant analysis
 [List of variants](https://www.ncbi.nlm.nih.gov/sars-cov-2/) was downloaded. 
-**get_mutations.py** script was used then to 
+**get_mutations.py** script was used then to find the mutations in the protein sequence and visualize them in Pymol.
 ### Docking results analysis
 **Docking_results_comparison.ipynb** includes analysis of our docking results and comparison of our results with results from Prague Team 2
 
